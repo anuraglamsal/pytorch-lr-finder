@@ -1,6 +1,7 @@
 import copy
 import os
 import torch
+import torch.nn as nn
 import numpy as np
 from tqdm.autonotebook import tqdm
 from torch.optim.lr_scheduler import _LRScheduler
@@ -421,6 +422,8 @@ class LRFinder(object):
                     scaled_loss.backward()
             else:
                 loss.backward()
+            
+            nn.utils.clip_grad_norm_(self.model.parameters(), max_norm=1)
 
             if total_loss is None:
                 total_loss = loss
